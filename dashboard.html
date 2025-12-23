@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Music</title>
+    <link rel="stylesheet" href="css/neomorph.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+</head>
+<body>
+    <!-- Background -->
+    <div class="ambient-bg">
+        <div class="ambient-shape shape-1"></div>
+        <div class="ambient-shape shape-2"></div>
+        <div class="ambient-shape shape-3"></div>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner-circle"></div>
+            <p>Chargement...</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="dashboard-container">
+        <!-- HEADER -->
+        <header class="dashboard-header neo-card">
+            <div class="header-left">
+                <button class="menu-toggle neo-btn" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <i class="fas fa-cloud-music"></i>
+                    <h1>Cloud Music</h1>
+                </div>
+            </div>
+
+            <div class="header-center">
+                <div class="search-box neo-inset">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Rechercher une musique...">
+                </div>
+            </div>
+
+            <div class="header-right">
+                <!-- Upload Button -->
+                <button class="upload-btn neo-btn" id="uploadBtn">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Upload MP3</span>
+                </button>
+                
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <button class="user-btn neo-btn" id="userBtn">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span id="username">...</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- SIDEBAR -->
+        <aside class="dashboard-sidebar neo-card" id="sidebar">
+            <nav class="sidebar-nav">
+                <!-- Navigation principale -->
+                <a href="#" class="nav-item active" data-section="library">
+                    <i class="fas fa-music"></i>
+                    <span>Bibliothèque</span>
+                </a>
+                
+                <!-- Mode Nuit -->
+                <a href="#" class="nav-item" id="themeToggleBtn">
+                    <i class="fas fa-moon"></i>
+                    <span>Mode Nuit</span>
+                    <div class="theme-switch">
+                        <input type="checkbox" id="themeCheckbox">
+                        <label for="themeCheckbox" class="theme-slider"></label>
+                    </div>
+                </a>
+                
+                <!-- Divider -->
+                <div class="nav-divider"></div>
+                
+                <!-- Pages légales -->
+                <a href="#" class="nav-item" data-section="about">
+                    <i class="fas fa-info-circle"></i>
+                    <span>À propos</span>
+                </a>
+                
+                <a href="#" class="nav-item" data-section="contact">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact</span>
+                </a>
+                
+                <a href="#" class="nav-item" data-section="privacy">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Confidentialité</span>
+                </a>
+                
+                <!-- Déconnexion -->
+                <a href="#" class="nav-item logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </nav>
+            
+            <!-- Storage Info -->
+            <div class="sidebar-footer">
+                <div class="storage-info">
+                    <div class="storage-header">
+                        <span>Stockage</span>
+                        <span id="storagePercent">0%</span>
+                    </div>
+                    <div class="storage-bar neo-inset">
+                        <div class="storage-fill" id="storageFill"></div>
+                    </div>
+                    <div class="storage-details">
+                        <span id="storageUsed">0 MB</span> / 1 GB
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="dashboard-main">
+            <!-- Upload Progress (caché par défaut) -->
+            <div class="upload-progress neo-card" id="uploadProgress">
+                <div class="progress-header">
+                    <h4><i class="fas fa-upload"></i> Upload en cours</h4>
+                    <button class="btn-cancel" id="cancelUpload">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="progress-bar neo-inset">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-info">
+                    <span id="progressText">Préparation...</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+            </div>
+
+            <!-- File Input (caché) -->
+            <input type="file" id="fileInput" accept=".mp3" multiple style="display: none;">
+
+            <!-- Sections -->
+            <div class="content-sections">
+                <!-- Bibliothèque -->
+                <section class="content-section active" id="librarySection">
+                    <div class="section-header">
+                        <h2><i class="fas fa-music"></i> Ma Bibliothèque</h2>
+                        <div class="section-stats">
+                            <span id="musicCount">0 musique</span>
+                        </div>
+                    </div>
+                    
+                    <div class="music-container">
+                        <div class="music-grid" id="musicGrid"></div>
+                        
+                        <div class="empty-state" id="emptyLibrary">
+                            <i class="fas fa-headphones"></i>
+                            <h3>Bibliothèque vide</h3>
+                            <p>Utilisez le bouton "Upload MP3" pour ajouter vos musiques</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- À propos -->
+                <section class="content-section" id="aboutSection">
+                    <div class="page-content neo-card">
+                        <h2><i class="fas fa-info-circle"></i> À propos</h2>
+                        <div class="page-body">
+                            <h3>Cloud Music v1.0</h3>
+                            <p>Votre plateforme musicale personnelle dans le cloud.</p>
+                            
+                            <h4>Fonctionnalités :</h4>
+                            <ul>
+                                <li>Upload de fichiers MP3</li>
+                                <li>Stockage cloud sécurisé</li>
+                                <li>Lecteur audio intégré</li>
+                                <li>Interface néomorphique</li>
+                            </ul>
+                            
+                            <p class="copyright">© 2024 Cloud Music</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contact -->
+                <section class="content-section" id="contactSection">
+                    <div class="page-content neo-card">
+                        <h2><i class="fas fa-envelope"></i> Contact</h2>
+                        <div class="page-body">
+                            <div class="contact-info">
+                                <div class="info-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <div>
+                                        <h4>Email</h4>
+                                        <p>support@cloudmusic.com</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="info-item">
+                                    <i class="fas fa-clock"></i>
+                                    <div>
+                                        <h4>Support</h4>
+                                        <p>Lundi - Vendredi: 9h-18h</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Confidentialité -->
+                <section class="content-section" id="privacySection">
+                    <div class="page-content neo-card">
+                        <h2><i class="fas fa-shield-alt"></i> Confidentialité</h2>
+                        <div class="page-body">
+                            <p><strong>Dernière mise à jour : 1er janvier 2024</strong></p>
+                            
+                            <h4>1. Données collectées</h4>
+                            <p>Email, fichiers MP3 uploadés.</p>
+                            
+                            <h4>2. Utilisation</h4>
+                            <p>Fourniture du service Cloud Music.</p>
+                            
+                            <h4>3. Protection</h4>
+                            <p>Chiffrement SSL, stockage sécurisé.</p>
+                            
+                            <h4>4. Vos droits</h4>
+                            <p>Accès, modification, suppression.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- PLAYER FIXE -->
+        <div class="player-fixed">
+            <div class="dashboard-player neo-card">
+                <!-- Now Playing -->
+                <div class="player-now-playing">
+                    <div class="track-art neo-inset">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="track-info">
+                        <div class="track-title" id="trackTitle">Aucune lecture</div>
+                        <div class="track-artist" id="trackArtist">—</div>
+                    </div>
+                </div>
+                
+                <!-- Controls -->
+                <div class="player-controls">
+                    <button class="btn-control" id="btnPrev" title="Précédent">
+                        <i class="fas fa-step-backward"></i>
+                    </button>
+                    
+                    <button class="btn-play neo-btn" id="btnPlay" title="Lecture">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    
+                    <button class="btn-control" id="btnNext" title="Suivant">
+                        <i class="fas fa-step-forward"></i>
+                    </button>
+                </div>
+                
+                <!-- Progress -->
+                <div class="player-progress">
+                    <span class="time-current" id="timeCurrent">0:00</span>
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-track neo-inset">
+                            <div class="progress-fill" id="playerProgress"></div>
+                        </div>
+                    </div>
+                    <span class="time-total" id="timeTotal">0:00</span>
+                </div>
+                
+                <!-- Volume -->
+                <div class="player-volume">
+                    <button class="btn-volume" id="btnVolume" title="Volume">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="audioPlayer"></audio>
+
+    <!-- Notifications -->
+    <div id="notifications"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/supabase.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
+    <script type="module" src="js/gest.js"></script>
+</body>
+</html>
