@@ -3,202 +3,876 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloud Music - Connexion</title>
-    <link rel="stylesheet" href="css/neomorph.css">
-    <link rel="stylesheet" href="css/auth.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+    <title>MAF - Mes Affiches</title>
+    <style>
+        /* ===== BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-color: #e0e0e0;
+            --surface-color: #e0e0e0;
+            --text-color: #333;
+            --primary-color: #ff6b6b;
+            --shadow-dark: #b5b5b5;
+            --shadow-light: #ffffff;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* ===== HEADER ===== */
+        .main-header {
+            width: 100%;
+            height: 80px;
+            background: var(--surface-color);
+            box-shadow: 
+                0 5px 15px var(--shadow-dark),
+                inset 0 1px 2px var(--shadow-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        
+        /* Bouton + à gauche */
+        .add-btn {
+            width: 50px;
+            height: 50px;
+            background: var(--surface-color);
+            border-radius: 15px;
+            border: none;
+            font-size: 28px;
+            color: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 
+                5px 5px 10px var(--shadow-dark),
+                -5px -5px 10px var(--shadow-light),
+                inset 2px 2px 4px #d0d0d0,
+                inset -2px -2px 4px #f0f0f0;
+            transition: all 0.2s ease;
+        }
+        
+        .add-btn:active {
+            box-shadow: 
+                inset 4px 4px 8px var(--shadow-dark),
+                inset -4px -4px 8px var(--shadow-light);
+        }
+        
+        /* Titre au centre */
+        .site-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: 
+                1px 1px 2px rgba(0,0,0,0.1),
+                -1px -1px 2px rgba(255,255,255,0.5);
+        }
+        
+        /* Logo à droite */
+        .logo-btn {
+            width: 50px;
+            height: 50px;
+            background: var(--surface-color);
+            border-radius: 15px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 
+                5px 5px 10px var(--shadow-dark),
+                -5px -5px 10px var(--shadow-light),
+                inset 2px 2px 4px #d0d0d0,
+                inset -2px -2px 4px #f0f0f0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-btn:active {
+            box-shadow: 
+                inset 4px 4px 8px var(--shadow-dark),
+                inset -4px -4px 8px var(--shadow-light);
+        }
+        
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+        
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 320px;
+            height: 100vh;
+            background: var(--surface-color);
+            box-shadow: 
+                -5px 0 15px rgba(0,0,0,0.1),
+                inset 1px 0 2px var(--shadow-light);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            padding: 90px 25px 25px;
+            overflow-y: auto;
+        }
+        
+        .sidebar.active {
+            right: 0;
+        }
+        
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(255,107,107,0.3);
+        }
+        
+        .sidebar-logo {
+            width: 60px;
+            height: 60px;
+            background: var(--surface-color);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                3px 3px 6px var(--shadow-dark),
+                -3px -3px 6px var(--shadow-light);
+        }
+        
+        .sidebar-logo-img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+        
+        .sidebar-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .menu-section {
+            margin-bottom: 25px;
+        }
+        
+        .menu-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: var(--surface-color);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            text-decoration: none;
+            color: var(--text-color);
+            box-shadow: 
+                3px 3px 6px var(--shadow-dark),
+                -3px -3px 6px var(--shadow-light);
+            transition: all 0.2s ease;
+        }
+        
+        .menu-item:active {
+            box-shadow: 
+                inset 2px 2px 4px var(--shadow-dark),
+                inset -2px -2px 4px var(--shadow-light);
+        }
+        
+        .menu-icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        /* ===== CONTENU PRINCIPAL ===== */
+        .main-content {
+            margin-top: 100px;
+            padding: 30px;
+            min-height: calc(100vh - 100px);
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .content-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        .refresh-btn {
+            padding: 10px 20px;
+            background: var(--surface-color);
+            border: none;
+            border-radius: 12px;
+            color: var(--text-color);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 
+                3px 3px 6px var(--shadow-dark),
+                -3px -3px 6px var(--shadow-light);
+        }
+        
+        .refresh-btn:active {
+            box-shadow: 
+                inset 2px 2px 4px var(--shadow-dark),
+                inset -2px -2px 4px var(--shadow-light);
+        }
+        
+        /* ===== GRILLE D'AFFICHES ===== */
+        .affiches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .affiche-card {
+            background: var(--surface-color);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 
+                8px 8px 16px var(--shadow-dark),
+                -8px -8px 16px var(--shadow-light),
+                inset 2px 2px 4px #d0d0d0,
+                inset -2px -2px 4px #f0f0f0;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .affiche-card:active {
+            box-shadow: 
+                inset 4px 4px 8px var(--shadow-dark),
+                inset -4px -4px 8px var(--shadow-light);
+        }
+        
+        .card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: var(--primary-color);
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .card-date {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 15px;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .card-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        
+        .btn-view {
+            background: var(--surface-color);
+            color: var(--text-color);
+            box-shadow: 
+                2px 2px 4px var(--shadow-dark),
+                -2px -2px 4px var(--shadow-light);
+        }
+        
+        .btn-edit {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 
+                2px 2px 4px rgba(255,107,107,0.3),
+                -2px -2px 4px rgba(255,255,255,0.8);
+        }
+        
+        .card-btn:active {
+            box-shadow: 
+                inset 1px 1px 2px var(--shadow-dark),
+                inset -1px -1px 2px var(--shadow-light);
+        }
+        
+        /* ===== GALERIE VIDE ===== */
+        .empty-gallery {
+            text-align: center;
+            padding: 60px 30px;
+            background: var(--surface-color);
+            border-radius: 20px;
+            box-shadow: 
+                inset 4px 4px 8px var(--shadow-dark),
+                inset -4px -4px 8px var(--shadow-light);
+        }
+        
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-title {
+            font-size: 20px;
+            color: #777;
+            margin-bottom: 15px;
+        }
+        
+        .empty-subtitle {
+            font-size: 14px;
+            color: #999;
+            line-height: 1.5;
+        }
+        
+        /* ===== NOTIFICATION ===== */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--surface-color);
+            color: var(--text-color);
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 
+                5px 5px 10px var(--shadow-dark),
+                -5px -5px 10px var(--shadow-light),
+                0 0 0 2px #27ae60;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 1001;
+        }
+        
+        .notification.show {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .main-header {
+                padding: 0 20px;
+                height: 70px;
+            }
+            
+            .site-title {
+                font-size: 24px;
+            }
+            
+            .add-btn, .logo-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 24px;
+            }
+            
+            .sidebar {
+                width: 280px;
+            }
+            
+            .main-content {
+                margin-top: 90px;
+                padding: 20px;
+            }
+            
+            .affiches-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-header {
+                padding: 0 15px;
+            }
+            
+            .site-title {
+                font-size: 20px;
+            }
+            
+            .sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .affiches-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-image {
+                height: 150px;
+            }
+        }
+    </style>
 </head>
-<body class="auth-page">
-    <!-- Background ambient -->
-    <div class="ambient-bg">
-        <div class="ambient-shape shape-1"></div>
-        <div class="ambient-shape shape-2"></div>
-        <div class="ambient-shape shape-3"></div>
-    </div>
-
-    <!-- Main container -->
-    <div class="auth-container">
-        <!-- Logo Hero -->
-        <div class="logo-hero">
-            <div class="logo-circle neo-card">
-                <i class="fas fa-cloud-music"></i>
+<body>
+    <!-- HEADER -->
+    <header class="main-header">
+        <!-- Bouton + à gauche -->
+        <button class="add-btn" id="addBtn">+</button>
+        
+        <!-- Titre au centre -->
+        <h1 class="site-title">MAF</h1>
+        
+        <!-- Logo à droite -->
+        <button class="logo-btn" id="sidebarToggle">
+            <div class="logo-img">🍽️</div>
+        </button>
+    </header>
+    
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <div class="sidebar-logo-img">🍽️</div>
             </div>
-            <h1 class="logo-title">Cloud Music</h1>
-            <p class="logo-subtitle">Votre musique, partout avec vous</p>
+            <h2 class="sidebar-title">Menu MAF</h2>
         </div>
-
-        <!-- Auth Card -->
-        <div class="auth-card neo-card">
-            <!-- Login Form -->
-            <form id="loginForm" class="auth-form active">
-                <div class="form-header">
-                    <h2><i class="fas fa-sign-in-alt"></i> Connexion</h2>
-                    <p>Accédez à votre bibliothèque musicale</p>
-                </div>
-
-                <div class="input-group neo-inset">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" id="loginEmail" placeholder="Votre email" required>
-                </div>
-
-                <div class="input-group neo-inset">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="loginPassword" placeholder="Votre mot de passe" required>
-                    <button type="button" class="password-toggle">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-
-                <div class="form-options">
-                    <label class="checkbox-container">
-                        <input type="checkbox" id="rememberMe">
-                        <span class="checkmark"></span>
-                        Se souvenir de moi
-                    </label>
-                    <a href="#" id="forgotPassword">Mot de passe oublié ?</a>
-                </div>
-
-                <button type="submit" class="btn btn-primary neo-btn">
-                    <i class="fas fa-sign-in-alt"></i> Se connecter
-                    <div class="btn-ripple"></div>
-                </button>
-
-                <div class="auth-divider">
-                    <span>Ou</span>
-                </div>
-
-                <button type="button" id="showSignup" class="btn btn-outline neo-btn">
-                    <i class="fas fa-user-plus"></i> Créer un compte
-                </button>
-            </form>
-
-            <!-- Signup Form -->
-            <form id="signupForm" class="auth-form">
-                <div class="form-header">
-                    <h2><i class="fas fa-user-plus"></i> Inscription</h2>
-                    <p>Rejoignez la communauté Cloud Music</p>
-                </div>
-
-                <div class="input-group neo-inset">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="signupUsername" placeholder="Nom d'utilisateur" required>
-                </div>
-
-                <div class="input-group neo-inset">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" id="signupEmail" placeholder="Votre email" required>
-                </div>
-
-                <div class="input-group neo-inset">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="signupPassword" placeholder="Mot de passe" required>
-                    <button type="button" class="password-toggle">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-
-                <div class="input-group neo-inset">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="signupConfirm" placeholder="Confirmer le mot de passe" required>
-                </div>
-
-                <div class="form-options">
-                    <label class="checkbox-container">
-                        <input type="checkbox" id="acceptTerms" required>
-                        <span class="checkmark"></span>
-                        J'accepte les <a href="#">conditions d'utilisation</a>
-                    </label>
-                </div>
-
-                <button type="submit" class="btn btn-primary neo-btn">
-                    <i class="fas fa-user-plus"></i> S'inscrire
-                    <div class="btn-ripple"></div>
-                </button>
-
-                <div class="auth-divider">
-                    <span>Déjà un compte ?</span>
-                </div>
-
-                <button type="button" id="showLogin" class="btn btn-outline neo-btn">
-                    <i class="fas fa-sign-in-alt"></i> Se connecter
-                </button>
-            </form>
-
-            <!-- Forgot Password Form -->
-            <form id="forgotForm" class="auth-form">
-                <div class="form-header">
-                    <h2><i class="fas fa-key"></i> Réinitialisation</h2>
-                    <p>Réinitialisez votre mot de passe</p>
-                </div>
-
-                <div class="input-group neo-inset">
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" id="resetEmail" placeholder="Votre email" required>
-                </div>
-
-                <button type="submit" class="btn btn-primary neo-btn">
-                    <i class="fas fa-paper-plane"></i> Envoyer le lien
-                    <div class="btn-ripple"></div>
-                </button>
-
-                <button type="button" id="showLoginFromForgot" class="btn btn-outline neo-btn">
-                    <i class="fas fa-arrow-left"></i> Retour à la connexion
-                </button>
-            </form>
+        
+        <div class="menu-section">
+            <h3 class="menu-title">Navigation</h3>
+            <a href="editor.html" class="menu-item">
+                <span class="menu-icon">✨</span>
+                <span>Nouvelle affiche</span>
+            </a>
+            <a href="#mes-affiches" class="menu-item">
+                <span class="menu-icon">📁</span>
+                <span>Mes affiches</span>
+            </a>
+            <a href="lecture.html" class="menu-item">
+                <span class="menu-icon">👁️</span>
+                <span>Voir démo</span>
+            </a>
         </div>
-
-        <!-- Features -->
-        <div class="features-grid">
-            <div class="feature-card neo-card">
-                <div class="feature-icon">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                </div>
-                <h3>Upload Illimité</h3>
-                <p>Stockez tous vos MP3 dans le cloud</p>
-            </div>
-
-            <div class="feature-card neo-card">
-                <div class="feature-icon">
-                    <i class="fas fa-sync-alt"></i>
-                </div>
-                <h3>Synchronisation</h3>
-                <p>Accédez à votre musique partout</p>
-            </div>
-
-            <div class="feature-card neo-card">
-                <div class="feature-icon">
-                    <i class="fas fa-headphones"></i>
-                </div>
-                <h3>Lecteur Intégré</h3>
-                <p>Écoutez directement depuis votre navigateur</p>
-            </div>
+        
+        <div class="menu-section">
+            <h3 class="menu-title">Gestion</h3>
+            <button class="menu-item" id="exportDataBtn">
+                <span class="menu-icon">📤</span>
+                <span>Exporter données</span>
+            </button>
+            <button class="menu-item" id="importDataBtn">
+                <span class="menu-icon">📥</span>
+                <span>Importer données</span>
+            </button>
+            <button class="menu-item" id="clearDataBtn">
+                <span class="menu-icon">🗑️</span>
+                <span>Tout effacer</span>
+            </button>
         </div>
-
-        <!-- Footer -->
-        <div class="auth-footer">
-            <p>© 2024 Cloud Music. Tous droits réservés.</p>
-            <div class="footer-links">
-                <a href="#" data-page="about">À propos</a>
-                <a href="#" data-page="contact">Contact</a>
-                <a href="#" data-page="privacy">Confidentialité</a>
-                <a href="#" data-page="terms">Conditions</a>
+        
+        <div class="menu-section">
+            <h3 class="menu-title">Information</h3>
+            <div class="menu-item" style="box-shadow: none; background: transparent; color: #777;">
+                <span class="menu-icon">ℹ️</span>
+                <span>Version 1.0.0</span>
+            </div>
+            <div class="menu-item" style="box-shadow: none; background: transparent; color: #777;">
+                <span class="menu-icon">📱</span>
+                <span>MAF - Mon Affiche Facile</span>
             </div>
         </div>
     </div>
-
-    <!-- Notifications -->
-    <div id="notificationContainer" class="notifications"></div>
-
-    <!-- Loading overlay -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="loading-spinner">
-            <div class="spinner-circle"></div>
-            <p>Chargement...</p>
+    
+    <!-- OVERLAY -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- CONTENU PRINCIPAL -->
+    <main class="main-content">
+        <div class="content-header">
+            <h2 class="content-title">📁 Mes Affiches</h2>
+            <button class="refresh-btn" id="refreshBtn">
+                <span>🔄</span>
+                <span>Actualiser</span>
+            </button>
         </div>
+        
+        <!-- Grille d'affiches -->
+        <div class="affiches-grid" id="affichesGrid">
+            <!-- Les cartes seront générées par JavaScript -->
+        </div>
+    </main>
+    
+    <!-- NOTIFICATION -->
+    <div class="notification" id="notification">
+        <span id="notificationIcon">✅</span>
+        <span id="notificationText">Notification</span>
     </div>
-
-    <script type="module" src="js/supabase.js"></script>
-    <script type="module" src="js/auth.js"></script>
+    
+    <script>
+        // Gestionnaire de galerie MAF
+        class MAFHome {
+            constructor() {
+                this.sidebar = document.getElementById('sidebar');
+                this.sidebarOverlay = document.getElementById('sidebarOverlay');
+                this.affichesGrid = document.getElementById('affichesGrid');
+                this.notification = document.getElementById('notification');
+                this.init();
+            }
+            
+            init() {
+                console.log('🏠 MAF Home initialisé');
+                this.setupEventListeners();
+                this.loadAffiches();
+                this.checkFirstVisit();
+            }
+            
+            setupEventListeners() {
+                // Bouton sidebar
+                document.getElementById('sidebarToggle').addEventListener('click', () => this.toggleSidebar());
+                this.sidebarOverlay.addEventListener('click', () => this.closeSidebar());
+                
+                // Bouton +
+                document.getElementById('addBtn').addEventListener('click', () => {
+                    window.location.href = 'editor.html';
+                });
+                
+                // Bouton actualiser
+                document.getElementById('refreshBtn').addEventListener('click', () => this.loadAffiches());
+                
+                // Boutons sidebar
+                document.getElementById('exportDataBtn').addEventListener('click', () => this.exportData());
+                document.getElementById('importDataBtn').addEventListener('click', () => this.importData());
+                document.getElementById('clearDataBtn').addEventListener('click', () => this.clearData());
+                
+                // Fermer sidebar avec ESC
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') this.closeSidebar();
+                });
+            }
+            
+            toggleSidebar() {
+                this.sidebar.classList.toggle('active');
+                this.sidebarOverlay.classList.toggle('active');
+            }
+            
+            closeSidebar() {
+                this.sidebar.classList.remove('active');
+                this.sidebarOverlay.classList.remove('active');
+            }
+            
+            loadAffiches() {
+                // Charger toutes les affiches
+                const affiches = JSON.parse(localStorage.getItem('megFoodAffiches') || '[]');
+                
+                if (affiches.length === 0) {
+                    this.showEmptyGallery();
+                } else {
+                    this.displayAffiches(affiches);
+                }
+                
+                console.log(`📊 ${affiches.length} affiches chargées`);
+            }
+            
+            displayAffiches(affiches) {
+                this.affichesGrid.innerHTML = '';
+                
+                // Trier par date (plus récent en premier)
+                affiches.sort((a, b) => b.timestamp - a.timestamp);
+                
+                // Limiter à 20 affiches
+                const displayAffiches = affiches.slice(0, 20);
+                
+                displayAffiches.forEach((affiche, index) => {
+                    const card = this.createAfficheCard(affiche, index === 0);
+                    this.affichesGrid.appendChild(card);
+                });
+            }
+            
+            createAfficheCard(affiche, isNew = false) {
+                const card = document.createElement('div');
+                card.className = 'affiche-card';
+                card.dataset.id = affiche.id;
+                
+                // Image (utiliser la première image produit)
+                let imageUrl = affiche.image || 
+                              affiche.data?.product1Image || 
+                              'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
+                
+                // Vérifier si c'est une image base64
+                const isBase64 = imageUrl.startsWith('data:image');
+                
+                // Titre
+                const title = affiche.title || 'Affiche sans titre';
+                const shortTitle = affiche.shortTitle || title.substring(0, 20) + (title.length > 20 ? '...' : '');
+                
+                // Date
+                const date = affiche.date || 
+                           (affiche.data?.lastModified ? 
+                            new Date(affiche.data.lastModified).toLocaleDateString('fr-FR') : 
+                            'Date inconnue');
+                
+                card.innerHTML = `
+                    <div class="card-image">
+                        ${isBase64 ? 
+                            `<img src="${imageUrl}" alt="${title}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.parentElement.innerHTML='🖼️';">` : 
+                            `<img src="${imageUrl}" alt="${title}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.parentElement.innerHTML='🖼️';">`
+                        }
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title" title="${title}">
+                            ${shortTitle}
+                        </h3>
+                        <div class="card-date">📅 ${date}</div>
+                        <div class="card-actions">
+                            <button class="card-btn btn-view" data-action="view" data-id="${affiche.id}">
+                                👁️ Voir
+                            </button>
+                            <button class="card-btn btn-edit" data-action="edit" data-id="${affiche.id}">
+                                ✏️ Éditer
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Événements
+                const viewBtn = card.querySelector('[data-action="view"]');
+                const editBtn = card.querySelector('[data-action="edit"]');
+                
+                viewBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.viewAffiche(affiche);
+                });
+                
+                editBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.editAffiche(affiche);
+                });
+                
+                card.addEventListener('click', (e) => {
+                    if (!e.target.closest('.card-btn')) {
+                        this.viewAffiche(affiche);
+                    }
+                });
+                
+                return card;
+            }
+            
+            viewAffiche(affiche) {
+                // Sauvegarder les données temporairement
+                sessionStorage.setItem('megFoodViewData', JSON.stringify(affiche.data));
+                
+                // Ouvrir l'affiche
+                window.open('lecture.html', '_blank');
+                
+                this.showNotification(`👁️ Ouverture de "${affiche.title}"`);
+            }
+            
+            editAffiche(affiche) {
+                // Charger les données dans l'éditeur
+                localStorage.setItem('megFoodAffiche', JSON.stringify(affiche.data));
+                
+                // Ouvrir l'éditeur
+                window.location.href = 'editor.html';
+                
+                this.showNotification(`✏️ Édition de "${affiche.title}"`);
+            }
+            
+            showEmptyGallery() {
+                this.affichesGrid.innerHTML = `
+                    <div class="empty-gallery">
+                        <div class="empty-icon">📭</div>
+                        <h3 class="empty-title">Aucune affiche sauvegardée</h3>
+                        <p class="empty-subtitle">
+                            Créez votre première affiche en cliquant sur le bouton <strong>+</strong> en haut à gauche
+                        </p>
+                        <p class="empty-subtitle" style="margin-top: 20px;">
+                            Vos affiches apparaîtront ici automatiquement après sauvegarde
+                        </p>
+                    </div>
+                `;
+            }
+            
+            checkFirstVisit() {
+                const hasVisited = localStorage.getItem('mafHasVisited');
+                if (!hasVisited) {
+                    setTimeout(() => {
+                        this.showNotification('👋 Bienvenue sur MAF ! Cliquez sur + pour créer votre première affiche');
+                        localStorage.setItem('mafHasVisited', 'true');
+                    }, 1000);
+                }
+            }
+            
+            // Gestion des données
+            exportData() {
+                const data = localStorage.getItem('megFoodAffiches');
+                if (data) {
+                    const blob = new Blob([data], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `maf-affiches-${new Date().toISOString().split('T')[0]}.json`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                    this.showNotification('📤 Données exportées');
+                } else {
+                    this.showNotification('❌ Aucune donnée à exporter', 'error');
+                }
+                this.closeSidebar();
+            }
+            
+            importData() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            try {
+                                const data = JSON.parse(e.target.result);
+                                localStorage.setItem('megFoodAffiches', JSON.stringify(data));
+                                this.loadAffiches();
+                                this.showNotification('📥 Données importées avec succès');
+                            } catch {
+                                this.showNotification('❌ Fichier invalide', 'error');
+                            }
+                        };
+                        reader.readAsText(file);
+                    }
+                };
+                input.click();
+                this.closeSidebar();
+            }
+            
+            clearData() {
+                if (confirm('⚠️ Voulez-vous vraiment supprimer TOUTES vos affiches ? Cette action est irréversible.')) {
+                    localStorage.removeItem('megFoodAffiches');
+                    localStorage.removeItem('megFoodAffiche');
+                    this.loadAffiches();
+                    this.showNotification('🗑️ Toutes les données ont été effacées');
+                }
+                this.closeSidebar();
+            }
+            
+            showNotification(message, type = 'success') {
+                const icon = document.getElementById('notificationIcon');
+                const text = document.getElementById('notificationText');
+                
+                text.textContent = message;
+                
+                switch(type) {
+                    case 'error':
+                        icon.textContent = '❌';
+                        this.notification.style.boxShadow = 
+                            '5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light), 0 0 0 2px #e74c3c';
+                        break;
+                    case 'warning':
+                        icon.textContent = '⚠️';
+                        this.notification.style.boxShadow = 
+                            '5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light), 0 0 0 2px #f39c12';
+                        break;
+                    default:
+                        icon.textContent = '✅';
+                        this.notification.style.boxShadow = 
+                            '5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light), 0 0 0 2px #27ae60';
+                }
+                
+                this.notification.classList.add('show');
+                
+                setTimeout(() => {
+                    this.notification.classList.remove('show');
+                }, 3000);
+            }
+        }
+        
+        // Initialiser
+        document.addEventListener('DOMContentLoaded', () => {
+            window.mafHome = new MAFHome();
+        });
+        
+        // Gestion des images manquantes
+        document.addEventListener('error', function(e) {
+            if (e.target.tagName === 'IMG' && e.target.closest('.card-image')) {
+                e.target.style.display = 'none';
+                e.target.parentElement.innerHTML = '🖼️';
+            }
+        }, true);
+    </script>
 </body>
 </html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éditeur - Meg Food</title>
+    <link rel="stylesheet" href="css/editor.css">
+</head>
+<body>
+    <!-- HEADER ÉDITEUR -->
+    <header class="editor-header">
+        <div class="header-left">
+            <a href="index.html" class="back-btn" id="backBtn">
+                ←
+            </a>
+        </div>
+        
+        <div class="header-center">
+            <h1 class="editor-title">#EDITOR</h1>
+        </div>
+        
+        <div class="header-right">
+            <a href="lecture.html" target="_blank" class="action-btn preview-btn" id="previewBtn">
+                <span class="btn-icon">👁️</span>
+                <span class="btn-text">Voir</span>
+            </a>
+            <button class="action-btn save-btn" id="saveBtn">
+                <span class="btn-icon">💾</span>
+                <span class="btn-text">Save</span>
+            </button>
+        </div>
+    </header>
+    
+    <!-- CONTENU ÉDITEUR -->
+    <main class="editor-container">
+        <!-- SECTION 1: HEADER -->
+        <section class="edit-section" id="section-header">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2 class="section-title">Header de l'affiche</h2>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Logo (emoji) :</label>
+                <div class="emoji-selector">
+                    <input type="text" id="logoEmoji" class="form-input" value="😋" maxlength="2">
+                    <div class="emoji-suggestions">
+                        <small style="color: #777; margin-top: 5px; display: block;">
+                            Suggestions : 
+                            <span class="emoji-suggestion" data-emoji="😋">😋</span>
+                            <span class="emoji-suggestion" data-emoji="🍕">🍕</span>
+                            <span class="emoji-suggestion" data-emoji="🍔">🍔</span>
+                            <span class="emoji-suggestion" data-emoji="🥗">🥗</span>
+                            <span class="emoji-suggestion" data-emoji="🍽️">🍽️</span>
+                        </small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Nom du restaurant :</label>
+                <input type="text" id="siteTitle" class="form-input" value="MEG FOOD" maxlength="20">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Texte promotion :</label>
+                <input type="text" id="promoText" class="form-input" value="PROMO" maxlength="10">
+                <small style="color: #777; font-size: 12px;">Texte dans le cercle rouge</small>
+            </div>
+        </section>
+        
+        <!-- SECTION 2: IMAGES & PRODUITS -->
+        <section class="edit-section" id="section-images">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2 class="section-title">Images & Produits</h2>
+            </div>
+            
+            <!-- PRODUIT 1 -->
+            <div class="product-edit">
+                <h3 class="product-title">Produit 1</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Nom du plat :</label>
+                    <input type="text" id="product1Label" class="form-input" value="Pizza" maxlength="20">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Image du plat :</label>
+                    <div class="upload-container">
+                        <button type="button" class="upload-btn" data-target="product1">
+                            📁 Choisir une image
+                        </button>
+                        <input type="file" id="product1File" accept="image/*" class="file-input" data-target="product1" hidden>
+                        <div class="current-image">
+                            <small style="color: #777; display: block; margin-top: 10px;">
+                                Image actuelle : <span id="currentImage1">Pizza</span>
+                            </small>
+                        </div>
+                        <img id="previewImage1" class="image-preview" alt="Aperçu">
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="section-divider">
+            
+            <!-- PRODUIT 2 -->
+            <div class="product-edit">
+                <h3 class="product-title">Produit 2</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Nom du plat :</label>
+                    <input type="text" id="product2Label" class="form-input" value="Burger" maxlength="20">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Image du plat :</label>
+                    <div class="upload-container">
+                        <button type="button" class="upload-btn" data-target="product2">
+                            📁 Choisir une image
+                        </button>
+                        <input type="file" id="product2File" accept="image/*" class="file-input" data-target="product2" hidden>
+                        <div class="current-image">
+                            <small style="color: #777; display: block; margin-top: 10px;">
+                                Image actuelle : <span id="currentImage2">Burger</span>
+                            </small>
+                        </div>
+                        <img id="previewImage2" class="image-preview" alt="Aperçu">
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="section-divider">
+            
+            <!-- PRODUIT 3 -->
+            <div class="product-edit">
+                <h3 class="product-title">Produit 3</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Nom du plat :</label>
+                    <input type="text" id="product3Label" class="form-input" value="Salade" maxlength="20">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Image du plat :</label>
+                    <div class="upload-container">
+                        <button type="button" class="upload-btn" data-target="product3">
+                            📁 Choisir une image
+                        </button>
+                        <input type="file" id="product3File" accept="image/*" class="file-input" data-target="product3" hidden>
+                        <div class="current-image">
+                            <small style="color: #777; display: block; margin-top: 10px;">
+                                Image actuelle : <span id="currentImage3">Salade</span>
+                            </small>
+                        </div>
+                        <img id="previewImage3" class="image-preview" alt="Aperçu">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECTION 3: CONTACTS -->
+        <section class="edit-section" id="section-contacts">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">Informations de Contact</h2>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Titre de la section :</label>
+                <input type="text" id="contactsTitle" class="form-input" value="Contactez-nous" maxlength="30">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Numéro WhatsApp :</label>
+                <input type="text" id="whatsappNumber" class="form-input" value="+225 05 03 58 83 36">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Numéro de téléphone :</label>
+                <input type="text" id="phoneNumber" class="form-input" value="+225 05 03 58 83 36">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Adresse email :</label>
+                <input type="email" id="emailAddress" class="form-input" value="contact@megfood.com">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Texte de description :</label>
+                <textarea id="descriptionText" class="form-input textarea" rows="3">Chez Meg Food, nous mettons un point d'honneur à vous offrir des plats préparés avec des ingrédients frais et de qualité supérieure. Notre équipe de chefs passionnés crée chaque jour des recettes uniques qui raviront vos papilles.</textarea>
+            </div>
+        </section>
+    </main>
+    
+    <!-- NOTIFICATION -->
+    <div class="notification" id="notification">
+        <span class="notification-icon">✅</span>
+        <span id="notificationText">Modifications sauvegardées</span>
+    </div>
+    
+    <script src="js/editor.js"></script>
+</body>
+</html>
