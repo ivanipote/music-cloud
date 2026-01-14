@@ -1013,6 +1013,86 @@
     document.addEventListener('DOMContentLoaded', () => {
         window.liveSync = new LiveSync();
     });
+    <script>
+    // Charger les données de l'affiche sélectionnée
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('📖 Mode lecture initialisé');
+        
+        // Vérifier les sources de données (par ordre de priorité)
+        let afficheData = null;
+        
+        // 1. SessionStorage (depuis l'appui long)
+        const sessionData = sessionStorage.getItem('megFoodReadingData');
+        
+        // 2. LocalStorage (dernière vue)
+        const localData = localStorage.getItem('megFoodCurrentReading');
+        
+        // 3. Paramètre URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const afficheId = urlParams.get('id');
+        
+        if (sessionData) {
+            console.log('📦 Données chargées depuis sessionStorage');
+            afficheData = JSON.parse(sessionData);
+        } else if (localData) {
+            console.log('📦 Données chargées depuis localStorage');
+            afficheData = JSON.parse(localData);
+        } else if (afficheId && window.megFoodLibrary) {
+            console.log('🔍 Recherche de l\'affiche par ID:', afficheId);
+            afficheData = window.megFoodLibrary.getAfficheById(afficheId);
+        }
+        
+        // Appliquer les données si trouvées
+        if (afficheData && afficheData.data) {
+            console.log('🎨 Application des données d\'affiche:', afficheData.title);
+            applyAfficheData(afficheData.data);
+            
+            // Mettre à jour le titre de la page
+            document.title = `${afficheData.title} - Meg Food`;
+            
+            // Afficher un indicateur
+            showLoadingIndicator('Affiche chargée : ' + afficheData.title);
+        } else {
+            console.log('⚠️ Aucune donnée d\'affiche trouvée');
+            showLoadingIndicator('Aucune affiche sélectionnée');
+            
+            // Rediriger vers l'accueil après 3 secondes
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 3000);
+        }
+        
+        function applyAfficheData(data) {
+            // Cette fonction devrait exister dans lecture.html
+            // Elle applique les données du formulaire à l'affiche
+            if (typeof applyMegFoodModifications === 'function') {
+                applyMegFoodModifications(data);
+            }
+        }
+        
+        function showLoadingIndicator(message) {
+            const indicator = document.createElement('div');
+            indicator.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 10px 20px;
+                border-radius: 10px;
+                font-size: 14px;
+                z-index: 1000;
+                animation: fadeInOut 3s ease;
+            `;
+            indicator.textContent = message;
+            document.body.appendChild(indicator);
+            
+            setTimeout(() => {
+                indicator.remove();
+            }, 3000);
+        }
+    });
+</script>
 </script>
     <script src="js/modif.js"></script>
 </body>
