@@ -1,0 +1,76 @@
+/* HEADER ONGLET */
+.header-onglet {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 
+        inset 3px 3px 8px rgba(200, 200, 200, 0.5),
+        inset -3px -3px 8px rgba(255, 255, 255, 0.8);
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 100;
+    width: calc(100% - 40px);
+    max-width: 360px;
+}
+
+.btn-retour {
+    background-color: #FFFFFF;
+    color: #000000;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 
+        4px 4px 8px rgba(200, 200, 200, 0.4),
+        -4px -4px 8px rgba(255, 255, 255, 0.8);
+    transition: all 0.2s ease;
+}
+
+.btn-retour:active {
+    box-shadow: 
+        inset 2px 2px 4px rgba(200, 200, 200, 0.5),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.8);
+}
+
+/* CONTENU HISTORIQUE */
+.contenu-historique {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 120px;
+    padding: 20px;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+}
+
+.item-historique {
+    background-color: #FFFFFF;
+    border: 2px solid #000000;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 
+        4px 4px 8px rgba(200, 200, 200, 0.4),
+        -4px -4px 8px rgba(255, 255, 255, 0.8);
+}
+
+.calcul-item {
+    color: #000000;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.date-item {
+    color: #000000;
+    font-size: 12px;
+}
