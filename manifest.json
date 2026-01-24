@@ -10,26 +10,26 @@
   "background_color": "#FFFFFF",
   "icons": [
     {
-      "src": "./icon-192x192.png",
-      "sizes": "192x192",
+      "src": "https://ivanipote.github.io/meg-calculatrice/icon-192×192.png",
+      "sizes": "192×192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icon-512x512.png",
-      "sizes": "512x512",
+      "src": "https://ivanipote.github.io/meg-calculatrice/icon-512×512.png",
+      "sizes": "512×512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icon-maskable-192x192.png",
-      "sizes": "192x192",
+      "src": "https://ivanipote.github.io/meg-calculatrice/icon-maskable-192×192.png",
+      "sizes": "192×192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "./icon-maskable-512x512.png",
-      "sizes": "512x512",
+      "src": "https://ivanipote.github.io/meg-calculatrice/icon-maskable-512×512.png",
+      "sizes": "512×512",
       "type": "image/png",
       "purpose": "maskable"
     }
