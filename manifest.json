@@ -11,25 +11,25 @@
   "icons": [
     {
       "src": "https://ivanipote.github.io/meg-calculatrice/icon-192×192.png",
-      "sizes": "192×192",
+      "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
       "src": "https://ivanipote.github.io/meg-calculatrice/icon-512×512.png",
-      "sizes": "512×512",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
       "src": "https://ivanipote.github.io/meg-calculatrice/icon-maskable-192×192.png",
-      "sizes": "192×192",
+      "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
       "src": "https://ivanipote.github.io/meg-calculatrice/icon-maskable-512×512.png",
-      "sizes": "512×512",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     }
