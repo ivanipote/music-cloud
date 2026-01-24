@@ -10,19 +10,11 @@
   "background_color": "#FFFFFF",
   "icons": [
     {
-      "src": "icon-192×192.png",
-      "sizes": "192x192",
-      "type": "png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-192×192.png",
+      "src": "icon-512×512.png",
       "sizes": "512x512",
-      "type": "png",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ],
-  "categories": [
-    "productivity"
-  ]
+  "categories": ["productivity"]
 }
