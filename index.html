@@ -3,288 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meg Food - Bibliothèque</title>
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/tache.css">
-    
-    <!-- Icônes -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Polices -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* Style temporaire pour le logo */
-        .logo-placeholder {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            box-shadow: 
-                8px 8px 16px rgba(0,0,0,0.1),
-                -8px -8px 16px rgba(255,255,255,0.5);
-        }
-    </style>
+    <meta name="description" content="Calculatrice Web avec Historique et Conversion">
+    <meta name="theme-color" content="#FFFFFF">
+    <title>Calculatrice</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/calculatrice.css">
+    <link rel="stylesheet" href="css/convert.css">
+    <link rel="stylesheet" href="css/hist.css">
 </head>
-<body class="light-mode">
-    <!-- Overlay Flou -->
-    <div class="overlay-blur" id="overlayBlur"></div>
-    
-    <!-- HEADER PRINCIPAL -->
-    <header class="main-header">
-        <!-- Logo à gauche -->
-        <div class="header-section logo-section">
-            <button class="logo-btn" id="logoBtn" aria-label="Ouvrir le menu">
-                <div class="logo-container">
-                    <!-- Logo placeholder - à remplacer par votre logo.png -->
-                    <div class="logo-placeholder">
-                        MF
-                    </div>
-                    <!-- <img src="logo/logo.png" alt="Meg Food Logo" class="logo-img"> -->
-                </div>
-            </button>
-        </div>
-        
-        <!-- Barre de recherche au centre -->
-        <div class="header-section search-section">
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" 
-                       class="search-input" 
-                       id="searchInput" 
-                       placeholder="Rechercher une affiche...">
-                <button class="clear-search" id="clearSearch" aria-label="Effacer la recherche">
-                    <i class="fas fa-times"></i>
-                </button>
+<body>
+    <div id="app">
+        <!-- Page Calculatrice -->
+        <div id="calculatrice-page" class="page active">
+            <!-- Écran -->
+            <div class="ecran">
+                <div class="calcul-en-cours" id="calcul-en-cours">0</div>
+                <div class="resultat" id="resultat">=0</div>
+            </div>
+
+            <!-- Barre de fonction -->
+            <div class="barre-fonction">
+                <button class="btn-fonction" onclick="effacerCalcul()">C</button>
+                <button class="btn-fonction" onclick="allerHistorique()">HISTORIQUE</button>
+                <button class="btn-fonction" onclick="allerConversion()">CONVERSION</button>
+                <button class="btn-fonction" onclick="supprimerDernier()">DEL</button>
+            </div>
+
+            <!-- Pavé numérique -->
+            <div class="pave">
+                <button class="btn-numero" onclick="ajouterNumero('1')">1</button>
+                <button class="btn-numero" onclick="ajouterNumero('2')">2</button>
+                <button class="btn-numero" onclick="ajouterNumero('3')">3</button>
+                <button class="btn-operateur" onclick="ajouterOperateur('÷')">÷</button>
+
+                <button class="btn-numero" onclick="ajouterNumero('4')">4</button>
+                <button class="btn-numero" onclick="ajouterNumero('5')">5</button>
+                <button class="btn-numero" onclick="ajouterNumero('6')">6</button>
+                <button class="btn-operateur" onclick="ajouterOperateur('×')">×</button>
+
+                <button class="btn-numero" onclick="ajouterNumero('7')">7</button>
+                <button class="btn-numero" onclick="ajouterNumero('8')">8</button>
+                <button class="btn-numero" onclick="ajouterNumero('9')">9</button>
+                <button class="btn-operateur" onclick="ajouterOperateur('+')">+</button>
+
+                <button class="btn-numero" onclick="ajouterNumero('0')">0</button>
+                <button class="btn-numero" onclick="ajouterPoint()">.</button>
+                <button class="btn-egal" onclick="calculer()">=</button>
+                <button class="btn-operateur" onclick="ajouterOperateur('-')">-</button>
             </div>
         </div>
-        
-        <!-- Filtre -->
-        <div class="header-section filter-section">
-            <div class="filter-container">
-                <button class="filter-btn" id="filterBtn" aria-label="Filtrer les affiches">
-                    <i class="fas fa-filter"></i>
-                    <span class="filter-text">Filtre</span>
-                </button>
-                
-                <!-- Menu déroulant filtre -->
-                <div class="filter-dropdown" id="filterDropdown">
-                    <button class="filter-option" data-filter="a-z">
-                        <i class="fas fa-sort-alpha-down"></i>
-                        A → Z
-                    </button>
-                    <button class="filter-option" data-filter="z-a">
-                        <i class="fas fa-sort-alpha-down-alt"></i>
-                        Z → A
-                    </button>
-                    <button class="filter-option" data-filter="recent">
-                        <i class="fas fa-sort-numeric-down"></i>
-                        Récent
-                    </button>
-                    <button class="filter-option" data-filter="ancien">
-                        <i class="fas fa-sort-numeric-up"></i>
-                        Ancien
-                    </button>
-                </div>
+
+        <!-- Page Historique -->
+        <div id="historique-page" class="page">
+            <div class="header-onglet">
+                <span>HISTORIQUE</span>
+                <button class="btn-retour" onclick="retourCalculatrice()">← Retour</button>
+            </div>
+            <div class="contenu-historique" id="contenu-historique">
+                <!-- Les calculs s'affichent ici -->
             </div>
         </div>
-        
-        <!-- Bouton + à droite -->
-        <div class="header-section add-section">
-            <button class="add-btn" id="addBtn" aria-label="Créer une nouvelle affiche">
-                <i class="fas fa-plus"></i>
-            </button>
-        </div>
-    </header>
-    
-    <!-- SIDEBAR (Menu latéral) -->
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-content">
-            <!-- Header sidebar -->
-            <div class="sidebar-header">
-                <h2 class="sidebar-title">
-                    <i class="fas fa-images"></i>
-                    Mes Affiches
-                </h2>
-                <button class="close-sidebar" id="closeSidebar" aria-label="Fermer le menu">
-                    <i class="fas fa-times"></i>
-                </button>
-                <div class="file-count" id="fileCount">
-                    <i class="fas fa-file"></i>
-                    <span>0 sauvegardées</span>
-                </div>
+
+        <!-- Page Conversion -->
+        <div id="conversion-page" class="page">
+            <div class="header-onglet">
+                <span>CONVERSION</span>
+                <button class="btn-retour" onclick="retourCalculatrice()">← Retour</button>
             </div>
-            
-            <!-- Toggle Dark/Light Mode -->
-            <div class="theme-toggle">
-                <div class="toggle-header">
-                    <i class="fas fa-moon"></i>
-                    <span>Mode sombre</span>
-                </div>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="themeToggle">
-                    <span class="toggle-slider"></span>
-                </label>
+            <div class="contenu-conversion" id="contenu-conversion">
+                <!-- Le contenu de conversion s'affiche ici -->
             </div>
-            
-            <!-- Bouton Paramètres -->
-            <a href="para.html" class="sidebar-btn settings-btn">
-                <i class="fas fa-cog"></i>
-                Paramètres
-            </a>
-            
-            <!-- Pages légales -->
-            <div class="legal-links">
-                <a href="about.html" class="legal-link">
-                    <i class="fas fa-info-circle"></i>
-                    À propos
-                </a>
-                <a href="privacy.html" class="legal-link">
-                    <i class="fas fa-shield-alt"></i>
-                    Confidentialité
-                </a>
-                <a href="contact.html" class="legal-link">
-                    <i class="fas fa-envelope"></i>
-                    Contact
-                </a>
+            <div class="footer-conversion">
+                <button class="btn-categorie" onclick="changerCategorie('poids')">POIDS</button>
+                <button class="btn-categorie" onclick="changerCategorie('longueur')">LONGUEUR</button>
+                <button class="btn-categorie" onclick="changerCategorie('finance')">FINANCE</button>
             </div>
-            
-            <!-- Footer sidebar - Espace utilisé -->
-            <div class="sidebar-footer">
-                <div class="storage-info">
-                    <div class="storage-header">
-                        <i class="fas fa-database"></i>
-                        <span>Stockage utilisé</span>
-                    </div>
-                    <div class="storage-bar">
-                        <div class="storage-progress" id="storageProgress"></div>
-                    </div>
-                    <div class="storage-stats">
-                        <span id="storageUsed">0 KB</span>
-                        <span>/</span>
-                        <span id="storageTotal">5 MB</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </aside>
-    
-    <!-- MAIN CONTENT - Grille d'affiches -->
-    <main class="main-content">
-        <div class="content-header">
-            <h1 class="page-title">Mes Créations</h1>
-            <p class="page-subtitle" id="afficheCount">Aucune affiche créée</p>
-        </div>
-        
-        <div class="affiches-grid" id="affichesGrid">
-            <!-- Les cartes seront générées dynamiquement -->
-            <!-- Exemple de carte -->
-            <div class="affiche-card" data-id="1">
-                <div class="card-header">
-                    <h3 class="card-title">Promo Été 2024</h3>
-                </div>
-                <div class="card-main">
-                    <div class="card-images">
-                        <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');"></div>
-                        <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');"></div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <span class="card-date">
-                        <i class="far fa-calendar"></i>
-                        15 Jan 2024
-                    </span>
-                </div>
-            </div>
-            
-            <!-- Carte exemple 2 -->
-            <div class="affiche-card" data-id="2">
-                <div class="card-header">
-                    <h3 class="card-title">Menu Spécial</h3>
-                </div>
-                <div class="card-main">
-                    <div class="card-images">
-                        <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');"></div>
-                        <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');"></div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <span class="card-date">
-                        <i class="far fa-calendar"></i>
-                        10 Jan 2024
-                    </span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Message vide -->
-        <div class="empty-state" id="emptyState">
-            <div class="empty-icon">
-                <i class="fas fa-images"></i>
-            </div>
-            <h2>Aucune affiche</h2>
-            <p>Commencez par créer votre première affiche</p>
-            <button class="empty-btn" id="createFirstBtn">
-                <i class="fas fa-plus"></i>
-                Créer une affiche
-            </button>
-        </div>
-    </main>
-    
-    <!-- BARRE DE TÂCHES (pour appui long) -->
-    <div class="taskbar" id="taskbar">
-        <div class="taskbar-content">
-            <!-- Bouton Modifier -->
-            <button class="taskbar-btn edit-btn" data-action="edit" aria-label="Modifier">
-                <i class="fas fa-edit"></i>
-                <span class="btn-tooltip">Modifier</span>
-            </button>
-            
-            <!-- Bouton Voir -->
-            <button class="taskbar-btn view-btn" data-action="view" aria-label="Voir">
-                <i class="fas fa-eye"></i>
-                <span class="btn-tooltip">Voir</span>
-            </button>
-            
-            <!-- Bouton Télécharger -->
-            <button class="taskbar-btn download-btn" data-action="download" aria-label="Télécharger">
-                <i class="fas fa-download"></i>
-                <span class="btn-tooltip">Télécharger</span>
-            </button>
-            
-            <!-- Bouton Supprimer -->
-            <button class="taskbar-btn delete-btn" data-action="delete" aria-label="Supprimer">
-                <i class="fas fa-trash"></i>
-                <span class="btn-tooltip">Supprimer</span>
-            </button>
-            
-            <!-- Bouton Partager -->
-            <button class="taskbar-btn share-btn" data-action="share" aria-label="Partager">
-                <i class="fas fa-share-alt"></i>
-                <span class="btn-tooltip">Partager</span>
-            </button>
         </div>
     </div>
-    
-    <!-- MODAL CARTE ZOOMÉE -->
-    <div class="card-modal" id="cardModal">
-        <div class="modal-content" id="modalCardContent">
-            <!-- Contenu de la carte zoomée sera inséré ici -->
-        </div>
-    </div>
-    
-    <!-- Scripts -->
+
+    <script src="js/calculatrice.js"></script>
+    <script src="js/hist.js"></script>
+    <script src="js/convert.js"></script>
     <script src="js/script.js"></script>
-    <script src="js/tache.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js');
+        }
+    </script>
 </body>
 </html>
